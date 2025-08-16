@@ -1,0 +1,40 @@
+:root {
+  --color-primary: #31473A;
+  --color-secondary: #EDF4F2;
+  --color-accent: #D4AF37; /* Changed to a more elegant gold color */
+  --color-gold: #D4AF37; /* Added pure gold color */
+  --color-gold-light: #F7E9B7; /* Light gold for subtle elements */
+  --color-success: #15b5b0;
+  --color-warning: #3d0026;
+  --color-error: #ef4444;
+  --color-white: #fff;
+  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-14: 56px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+  --spacing-32: 128px;
+  --spacing-40: 160px;
+  --spacing-48: 192px;
+  --spacing-64: 256px;
+}
+
+body {
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}

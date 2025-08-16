@@ -1,0 +1,38 @@
+{
+  "name": "ruesdesignl",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@mui/material": "^5.15.0",
+    "daisyui": "^4.0.0",
+    "date-fns": "^3.6.0",
+    "firebase": "^12.1.0",
+    "framer-motion": "^10.16.4",
+    "lucide-react": "^0.367.0",
+    "next": "^15.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.50.0",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "postcss": "^8.4.0",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.4.0"
+  }
+}

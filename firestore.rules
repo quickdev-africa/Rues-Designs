@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users: Only the user or admin can read/write their profile
+    match /users/{userId} {
+      allow read, update, delete: if request.auth != null && (request.auth.uid == userId || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true);
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow list: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Products: Read for all, write for admin
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Categories: Read for all, write for admin
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Bookings: Only user or admin can read/write
+    match /bookings/{bookingId} {
+      allow read, update, delete: if request.auth != null && (resource.data.user == request.auth.uid || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true);
+      allow create: if request.auth != null && request.resource.data.user == request.auth.uid;
+      allow list: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Availability: Read for all, write for admin
+    match /availability/{availabilityId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Reviews: Read for all, create if user matches, update/delete by author or admin
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.user == request.auth.uid;
+      allow update, delete: if request.auth != null && (resource.data.user == request.auth.uid || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true);
+    }
+
+    // Settings: Read for all, write for admin
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Analytics: Read/write for admin only
+    match /analytics/{docId} {
+      allow read, write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true;
+    }
+  }
+}

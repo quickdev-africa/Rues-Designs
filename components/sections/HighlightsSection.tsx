@@ -1,0 +1,107 @@
+'use client';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { PlayCircle, X } from 'lucide-react';
+
+const videos = [
+  { 
+    title: 'Modern Lounge Showcase',
+    thumbnail: '/images/stock/video-event-setup.jpg', 
+    youtubeId: 'SWBn9v91SbU'
+  },
+  { 
+    title: 'Blissful Wedding Celebration',
+    thumbnail: '/images/stock/video-tablescaping.jpg', 
+    youtubeId: 'nLOBREEDI9I'
+  },
+  { 
+    title: 'Elegant Birthday Experience',
+    thumbnail: '/images/stock/video-party-planning.jpg', 
+    youtubeId: '4vQHXKpONAw'
+  },
+];
+
+export default function HighlightsSection() {
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  return (
+    <section className="bg-white">
+      <h2 className="text-3xl font-bold mb-12 text-center text-gray-900 pt-16">
+        Featured Videos
+      </h2>
+      
+      {/* Video Gallery Container - Full Width */}
+      <div className="w-full h-[300px] md:h-[360px] lg:h-[420px] flex flex-col lg:flex-row">
+        {videos.map((video, index) => {
+          const isHovered = hoveredIndex === index;
+          
+          return (
+            <div 
+              key={video.title}
+              className={`relative overflow-hidden transition-all duration-700 cursor-pointer bg-black h-[120px] lg:h-auto
+                ${hoveredIndex === null 
+                  ? 'lg:flex-1' 
+                  : isHovered 
+                    ? 'lg:flex-[1.1]' 
+                    : 'lg:flex-[0.5]'
+                }
+              `}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => setActiveVideo(video.youtubeId)}
+            >
+              {/* Video thumbnail */}
+              <img 
+                src={video.thumbnail} 
+                alt={video.title} 
+                className="w-full h-full object-cover transition-opacity duration-300"
+              />
+              
+              {/* Play button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div 
+                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 
+                    ${isHovered ? 'ring-4 ring-[#D4AF37] scale-110' : ''}`}
+                >
+                  <PlayCircle 
+                    className={`w-full h-full transition-colors ${isHovered ? 'text-[#D4AF37]' : 'text-white'}`}
+                    strokeWidth={1.5}
+                  />
+                </div>
+              </div>
+
+              {/* Title overlay - always visible on mobile, only on hover for desktop */}
+              <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-3 lg:p-6 ${!isHovered && 'lg:hidden'}`}>
+                <h3 className="text-base md:text-xl lg:text-2xl font-semibold text-white text-center lg:text-left">{video.title}</h3>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Video Modal/Lightbox */}
+      {activeVideo && (
+        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-5xl">
+            <button 
+              className="absolute -top-12 right-0 text-white hover:text-[#D4AF37] transition-colors z-10"
+              onClick={() => setActiveVideo(null)}
+            >
+              <X size={32} />
+            </button>
+            <div className="relative w-full bg-black" style={{ paddingBottom: '56.25%' }}>
+              <iframe
+                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1`}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

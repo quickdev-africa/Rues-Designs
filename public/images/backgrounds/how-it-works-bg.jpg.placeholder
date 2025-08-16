@@ -1,0 +1,13 @@
+This is a placeholder for the actual image file.
+You'll need to replace this with a real JPG image file named "how-it-works-bg.jpg".
+
+Recommended image specifications:
+- Resolution: 1920x1080 pixels (minimum)
+- Aspect ratio: 16:9 or similar widescreen format
+- File size: 200-500KB (optimized for web)
+- Content: A subtle, elegant image related to events, celebrations, or rental items
+- Style: Desaturated or low contrast to not compete with text
+- Format: JPG with high-quality compression
+
+The image should be placed in this directory:
+/public/images/backgrounds/how-it-works-bg.jpg
