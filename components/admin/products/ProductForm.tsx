@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import { addDoc, collection, serverTimestamp, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { supabase } from "../../../lib/supabase";
 import ProductImageUpload from "./ProductImageUpload";
 
 export default function ProductForm({ onCreated }: { onCreated?: () => void }) {
@@ -19,15 +18,16 @@ export default function ProductForm({ onCreated }: { onCreated?: () => void }) {
     setLoading(true);
     setError("");
     try {
-      const docRef = await addDoc(collection(db, "products"), {
+      const { data, error } = await supabase.from('products').insert({
         name,
-        category,
-        price: parseFloat(price),
+        description: '',
+        categories: [category],
+        images: imageUrl ? [imageUrl] : [],
+        pricing: { price: parseFloat(price) },
         status,
-        imageUrl,
-        createdAt: serverTimestamp(),
-      });
-      setNewProductId(docRef.id);
+      }).select('id').single();
+      if (error) throw error;
+      setNewProductId(data.id);
       setName("");
       setCategory("");
       setPrice("");
@@ -44,7 +44,7 @@ export default function ProductForm({ onCreated }: { onCreated?: () => void }) {
   async function handleImageUploaded(url: string) {
     setImageUrl(url);
     if (newProductId) {
-      await updateDoc(doc(db, "products", newProductId), { imageUrl: url });
+  await supabase.from('products').update({ images: [url] }).eq('id', newProductId);
     }
   }
 

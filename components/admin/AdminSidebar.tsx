@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const nav = [
   { href: "/admin", label: "Dashboard" },
@@ -13,19 +15,27 @@ const nav = [
 ];
 
 export default function AdminSidebar() {
+  const pathname = usePathname();
   return (
-    <aside className="w-64 bg-gray-900 text-white flex flex-col p-4 min-h-screen">
-      <h2 className="font-bold text-lg mb-6">Admin Panel</h2>
-      <nav className="flex flex-col gap-2">
-        {nav.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="rounded px-3 py-2 hover:bg-gray-800 hover:text-yellow-300 transition-colors"
-          >
-            {item.label}
-          </Link>
-        ))}
+    <aside className="w-64 bg-white text-gray-900 border-r border-gray-200 flex flex-col p-4 min-h-screen">
+      <h2 className="font-semibold text-base tracking-wide mb-4">Admin</h2>
+      <nav className="flex flex-col gap-1">
+        {nav.map((item) => {
+          const active = pathname === item.href || pathname?.startsWith(item.href + "/");
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                active
+                  ? "bg-gray-100 font-medium"
+                  : "hover:bg-gray-50"
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );

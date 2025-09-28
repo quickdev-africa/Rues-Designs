@@ -157,15 +157,15 @@ export default function HeroSection() {
                 transition={{ delay: 0.9, duration: 0.5 }}
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-gold-500 text-sm md:text-base font-semibold">500+</span>
+                  <span className="text-[#D4AF37] text-sm md:text-base font-semibold">500+</span>
                   <span className="text-xs md:text-sm opacity-80">Events</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-gold-500 text-sm md:text-base font-semibold">24/7</span>
+                  <span className="text-[#D4AF37] text-sm md:text-base font-semibold">24/7</span>
                   <span className="text-xs md:text-sm opacity-80">Support</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-gold-500 text-sm md:text-base font-semibold">Free</span>
+                  <span className="text-[#D4AF37] text-sm md:text-base font-semibold">Free</span>
                   <span className="text-xs md:text-sm opacity-80">Delivery</span>
                 </div>
               </motion.div>
@@ -236,15 +236,15 @@ export default function HeroSection() {
                 transition={{ delay: 0.9, duration: 0.5 }}
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-gold-500 text-sm md:text-base font-semibold">500+</span>
+                  <span className="text-[#D4AF37] text-sm md:text-base font-semibold">500+</span>
                   <span className="text-xs md:text-sm opacity-80">Events</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-gold-500 text-sm md:text-base font-semibold">24/7</span>
+                  <span className="text-[#D4AF37] text-sm md:text-base font-semibold">24/7</span>
                   <span className="text-xs md:text-sm opacity-80">Support</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-gold-500 text-sm md:text-base font-semibold">Free</span>
+                  <span className="text-[#D4AF37] text-sm md:text-base font-semibold">Free</span>
                   <span className="text-xs md:text-sm opacity-80">Delivery</span>
                 </div>
               </motion.div>
@@ -260,7 +260,7 @@ export default function HeroSection() {
             key={index}
             onClick={() => setCurrentSlide(index)}
             className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-              currentSlide === index ? 'bg-gold-500 w-6' : 'bg-white/50 hover:bg-white/70'
+              currentSlide === index ? 'bg-[#D4AF37] w-6' : 'bg-white/50 hover:bg-white/70'
             }`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}

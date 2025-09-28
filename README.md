@@ -7,7 +7,7 @@ This is a Next.js 14 project for the RuesDesignl party rental website, featuring
 - TypeScript support
 - Tailwind CSS & DaisyUI for UI
 - ESLint & Prettier for code quality
-- Firebase integration
+- Supabase integration (Auth, DB)
 - React Hook Form for forms
 - Lucide React icons
 - Date-fns for date utilities
@@ -33,124 +33,66 @@ This is a Next.js 14 project for the RuesDesignl party rental website, featuring
 ## Environment Variables
 See `.env.example` for required variables.
 
-## Firestore CRUD Code Samples
+### Cloudinary Configuration
+Add these to `.env.local` for image uploads via Cloudinary:
+
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` (e.g., `your_cloud_name`)
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+- Optional: `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` if you use an unsigned preset
+
+Uploads use a signed approach via `/api/cloudinary/sign` to protect your secret.
+
+## Supabase CRUD Code Samples
 
 ### Add a Product
 ```ts
-import { db } from './lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { supabase } from './lib/supabase';
 
 export async function addProduct(product) {
-  const docRef = await addDoc(collection(db, 'products'), product);
-  return docRef.id;
+  const { data, error } = await supabase.from('products').insert(product).select('id').single();
+  if (error) throw error;
+  return data.id;
 }
 ```
 
 ### Get All Products
 ```ts
-import { db } from './lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { supabase } from './lib/supabase';
 
 export async function getProducts() {
-  const querySnapshot = await getDocs(collection(db, 'products'));
-  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
 }
 ```
 
 ### Update a Booking
 ```ts
-import { db } from './lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { supabase } from './lib/supabase';
 
 export async function updateBooking(bookingId, data) {
-  const bookingRef = doc(db, 'bookings', bookingId);
-  await updateDoc(bookingRef, data);
+  const { error } = await supabase.from('bookings').update(data).eq('id', bookingId);
+  if (error) throw error;
 }
 ```
 
 ### Delete a Review
 ```ts
-import { db } from './lib/firebase';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { supabase } from './lib/supabase';
 
 export async function deleteReview(reviewId) {
-  await deleteDoc(doc(db, 'reviews', reviewId));
+  const { error } = await supabase.from('reviews').delete().eq('id', reviewId);
+  if (error) throw error;
 }
 ```
 
-### Listen to User Profile Changes
+### Subscribe to Auth Changes
 ```ts
-import { db } from './lib/firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { supabase } from './lib/supabase';
 
-export function listenToUserProfile(userId, callback) {
-  return onSnapshot(doc(db, 'users', userId), (doc) => {
-    callback(doc.data());
-  });
-}
-```
-
-## Advanced Firestore Queries & Batch Operations
-
-### Query Bookings by Status and Date
-```ts
-import { db } from './lib/firebase';
-import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
-
-export async function getBookingsByStatusAndDate(status, startDate) {
-  const q = query(
-    collection(db, 'bookings'),
-    where('status', '==', status),
-    where('dates.start', '>=', startDate),
-    orderBy('dates.start', 'asc')
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-}
-```
-
-### Get Products in a Category
-```ts
-import { db } from './lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-
-export async function getProductsByCategory(categoryId) {
-  const q = query(
-    collection(db, 'products'),
-    where('categories', 'array-contains', categoryId)
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-}
-```
-
-### Batch Write: Add Multiple Reviews
-```ts
-import { db } from './lib/firebase';
-import { writeBatch, collection, doc } from 'firebase/firestore';
-
-export async function addMultipleReviews(reviews) {
-  const batch = writeBatch(db);
-  reviews.forEach((review) => {
-    const reviewRef = doc(collection(db, 'reviews'));
-    batch.set(reviewRef, review);
-  });
-  await batch.commit();
-}
-```
-
-### Batch Update: Mark Products as Archived
-```ts
-import { db } from './lib/firebase';
-import { writeBatch, doc } from 'firebase/firestore';
-
-export async function archiveProducts(productIds) {
-  const batch = writeBatch(db);
-  productIds.forEach((id) => {
-    const productRef = doc(db, 'products', id);
-    batch.update(productRef, { status: 'archived' });
-  });
-  await batch.commit();
+export function onAuthChange(callback) {
+  return supabase.auth.onAuthStateChange((_event, session) => callback(session));
 }
 ```
 

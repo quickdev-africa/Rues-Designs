@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { supabase } from "../../../lib/supabase";
 import ProductImageUpload from "./ProductImageUpload";
 
 export default function ProductEditModal({ product, onClose, onUpdated }: {
@@ -21,13 +20,20 @@ export default function ProductEditModal({ product, onClose, onUpdated }: {
     setLoading(true);
     setError("");
     try {
-      await updateDoc(doc(db, "products", product.id), {
+      const pricing: any = typeof product.pricing === 'object' ? { ...product.pricing } : {};
+      if (!isNaN(parseFloat(price))) {
+        pricing.price = parseFloat(price);
+      }
+      const updates: any = {
         name,
-        category,
-        price: parseFloat(price),
+        categories: [category],
         status,
-        imageUrl,
-      });
+        images: imageUrl ? [imageUrl] : [],
+        pricing,
+        updated_at: new Date().toISOString(),
+      };
+      const { error } = await supabase.from('products').update(updates).eq('id', product.id);
+      if (error) throw error;
       if (onUpdated) onUpdated();
       onClose();
     } catch (err: any) {

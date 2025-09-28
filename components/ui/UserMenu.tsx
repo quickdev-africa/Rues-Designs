@@ -11,7 +11,7 @@ export default function UserMenu() {
   return (
     <div className="relative">
       <button
-        className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
         aria-label="My Account"
         onClick={() => setOpen(v => !v)}
         title="My Account"

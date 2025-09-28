@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../lib/firebase';
+import { supabase } from '../../../lib/supabase';
 
 interface OrderDetailsProps {
   orderId: string;
@@ -16,15 +15,17 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
   useEffect(() => {
     async function fetchOrder() {
       setLoading(true);
-      const ref = doc(db, 'orders', orderId);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        const data = { id: snap.id, ...snap.data() };
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('id', orderId)
+        .single();
+      if (error) {
+        setOrder(null);
+      } else if (data) {
         setOrder(data);
         setStatus(data.status);
         setTotal(data.total);
-      } else {
-        setOrder(null);
       }
       setLoading(false);
     }
@@ -34,7 +35,11 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateDoc(doc(db, 'orders', orderId), { status, total });
+      const { error } = await supabase
+        .from('orders')
+        .update({ status, total })
+        .eq('id', orderId);
+      if (error) throw error;
       setOrder({ ...order, status, total });
       setEdit(false);
     } catch (err) {
@@ -78,9 +83,21 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
             <span className="text-gray-900 font-semibold">${order.total?.toFixed(2)}</span>
           )}
         </div>
+        <div className="flex justify-between border-b pb-2">
+          <span className="font-semibold text-gray-700">Zip Code:</span>
+          <span className="text-gray-900">{order.zip || '-'}</span>
+        </div>
+        <div className="flex justify-between border-b pb-2">
+          <span className="font-semibold text-gray-700">Zone:</span>
+          <span className="text-gray-900">{order.zone || '-'}</span>
+        </div>
+        <div className="flex justify-between border-b pb-2">
+          <span className="font-semibold text-gray-700">Delivery Fee:</span>
+          <span className="text-gray-900">{order.deliveryFee ? `$${order.deliveryFee}` : '-'}</span>
+        </div>
         <div className="flex justify-between">
           <span className="font-semibold text-gray-700">Date:</span>
-          <span className="text-gray-900">{order.createdAt ? new Date(order.createdAt).toLocaleString() : ''}</span>
+          <span className="text-gray-900">{order.created_at ? new Date(order.created_at).toLocaleString() : ''}</span>
         </div>
       </div>
       <div className="mt-6 flex gap-4">

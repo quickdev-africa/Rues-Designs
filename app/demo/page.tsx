@@ -7,7 +7,6 @@ import { Badge } from '../../components/Badge';
 import { Avatar } from '../../components/Avatar';
 
 import React from 'react';
-import FirebaseDemo from './firebase-demo';
 import NextImage from 'next/image';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -77,10 +76,9 @@ export default function DemoPage() {
           Close
         </Button>
       </Modal>
-      <FirebaseDemo />
-      {/* Firestore Test UI */}
+      {/* Supabase Test UI */}
       <section className="w-full max-w-2xl mt-8">
-        <h2 className="font-heading text-2xl text-primary mb-2">Firestore Test UI</h2>
+        <h2 className="font-heading text-2xl text-primary mb-2">Supabase Test UI</h2>
         <FirestoreTest />
       </section>
     </main>

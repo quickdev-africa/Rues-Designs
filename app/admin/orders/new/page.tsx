@@ -2,17 +2,23 @@
 "use client";
 import OrderForm from '../../../../components/admin/orders/OrderForm';
 import { useRouter } from 'next/navigation';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../../../lib/firebase';
+import { supabase } from '../../../../lib/supabase';
 
 export default function NewOrderPage() {
   const router = useRouter();
   const handleCreate = async (order: any) => {
     try {
-      const docRef = await addDoc(collection(db, 'orders'), {
-        ...order,
-        createdAt: serverTimestamp(),
-      });
+      const { error } = await supabase
+        .from('orders')
+        .insert({
+          customerName: order.customerName,
+          status: order.status,
+          total: order.total,
+          zip: order.zip,
+          zone: order.zone,
+          deliveryFee: order.deliveryFee,
+        });
+      if (error) throw error;
       router.push('/admin/orders');
     } catch (err) {
       alert('Failed to create order: ' + (err as any).message);

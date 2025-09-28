@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, query, orderBy, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { supabase } from "../../../lib/supabase";
 import ProductEditModal from "./ProductEditModal";
 
 export default function ProductTable() {
@@ -19,20 +18,42 @@ export default function ProductTable() {
   const pageSize = 10;
 
   useEffect(() => {
-    const q = query(collection(db, "products"), orderBy(sortBy, sortDir));
-    const unsub = onSnapshot(q, (snapshot) => {
-      setProducts(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    let active = true;
+    async function load() {
+      // Fetch from Supabase and normalize fields for UI
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, status, created_at, images, categories, pricing')
+        .order('created_at', { ascending: false });
+      if (!active) return;
+      if (error) {
+        setProducts([]);
+      } else {
+        const mapped = (data || []).map(p => ({
+          id: p.id,
+          name: (p as any).name,
+          status: (p as any).status || 'active',
+          created_at: (p as any).created_at,
+          imageUrl: Array.isArray((p as any).images) ? (p as any).images[0] : '',
+          category: Array.isArray((p as any).categories) ? (p as any).categories[0] : '-',
+          price: typeof (p as any).pricing === 'object' && (p as any).pricing ? ((p as any).pricing.price ?? (p as any).pricing.base ?? 0) : 0,
+        }));
+        setProducts(mapped);
+      }
       setLoading(false);
-    });
-    return () => unsub();
-  }, [sortBy, sortDir]);
+    }
+    load();
+    return () => { active = false };
+  }, []);
 
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this product?")) return;
     setDeletingId(id);
     setError("");
     try {
-      await deleteDoc(doc(db, "products", id));
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) throw error;
+      setProducts(prev => prev.filter(p => p.id !== id));
     } catch (err: any) {
       setError(err.message || "Error deleting product");
     } finally {
@@ -46,7 +67,9 @@ export default function ProductTable() {
     setBatchLoading(true);
     setError("");
     try {
-      await Promise.all(selected.map(id => deleteDoc(doc(db, "products", id))));
+      const { error } = await supabase.from('products').delete().in('id', selected);
+      if (error) throw error;
+      setProducts(prev => prev.filter(p => !selected.includes(p.id)));
       setSelected([]);
     } catch (err: any) {
       setError(err.message || "Error deleting products");
@@ -67,14 +90,27 @@ export default function ProductTable() {
   if (!products.length) return <div>No products found.</div>;
 
   // Filter by search
-  const filtered = products.filter(p =>
-    p.name?.toLowerCase().includes(search.toLowerCase()) ||
-    p.category?.toLowerCase().includes(search.toLowerCase())
+  const filtered = products.filter((p: any) =>
+    (p.name || '').toLowerCase().includes(search.toLowerCase()) ||
+    (p.category || '').toLowerCase().includes(search.toLowerCase())
   );
 
+  // Sort locally based on selected field
+  const sorted = [...filtered].sort((a: any, b: any) => {
+    const dir = sortDir === 'asc' ? 1 : -1;
+    const field = sortBy;
+    const av = field === 'createdAt' ? a.created_at : a[field];
+    const bv = field === 'createdAt' ? b.created_at : b[field];
+    if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * dir;
+    const as = String(av ?? '');
+    const bs = String(bv ?? '');
+    return as.localeCompare(bs) * dir;
+  });
+
   // Pagination
-  const totalPages = Math.ceil(filtered.length / pageSize);
-  const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const totalPages = Math.ceil(sorted.length / pageSize) || 1;
+  const clampedPage = Math.min(page, totalPages);
+  const paginated = sorted.slice((clampedPage - 1) * pageSize, clampedPage * pageSize);
 
   function handleSort(field: string) {
     if (sortBy === field) {

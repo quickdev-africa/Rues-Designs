@@ -1,15 +1,12 @@
 import OrderDetails from '../../../../components/admin/orders/OrderDetails';
 import { notFound } from 'next/navigation';
 
-interface Props {
-  params: { orderId: string };
-}
-
-export default function OrderDetailsPage({ params }: Props) {
-  if (!params.orderId) return notFound();
+export default async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string }> }) {
+  const { orderId } = await params;
+  if (!orderId) return notFound();
   return (
     <div className="p-6">
-      <OrderDetails orderId={params.orderId} />
+      <OrderDetails orderId={orderId} />
     </div>
   );
 }

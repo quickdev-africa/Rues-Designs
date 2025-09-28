@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase SQL Setup Guide</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 20px; background: #f8fafc; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .step { background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6; }
+        .sql-box { background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 8px; font-family: 'Monaco', 'Courier New', monospace; font-size: 14px; overflow-x: auto; margin: 10px 0; }
+        .copy-btn { background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin: 5px 0; }
+        .copy-btn:hover { background: #2563eb; }
+        .success { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+        .warning { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Supabase Database Setup</h1>
+            <p>Enhanced Apple-Quality Rental Backend - Ready to Deploy!</p>
+        </div>
+
+        <div class="step success">
+            <h2>✅ Step 1: Open Supabase Dashboard</h2>
+            <p>Go to your Supabase project dashboard and click on the <strong>SQL Editor</strong> tab.</p>
+            <button class="copy-btn" onclick="window.open('https://supabase.com/dashboard', '_blank')">Open Supabase Dashboard</button>
+        </div>
+
+        <div class="step">
+            <h2>📋 Step 2: Execute Enhanced Schema</h2>
+            <p>Copy the entire content below and paste it into the Supabase SQL Editor:</p>
+            <button class="copy-btn" onclick="copyToClipboard('schema-sql')">📋 Copy Schema SQL</button>
+            <div class="sql-box" id="schema-sql">-- Complete Rental Business Database Schema (6 Tables)
+-- Apple-Quality Standards | Optimized Performance | Comprehensive Features
+
+-- Enable necessary extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "postgis"; -- For geographical calculations
+
+-- This will create all 6 tables, indexes, functions, and sample data
+-- File: database/enhanced-schema.sql (Full content will be shown in your terminal)</div>
+            <p><strong>Action:</strong> Copy the full content from <code>database/enhanced-schema.sql</code> and execute in Supabase.</p>
+        </div>
+
+        <div class="step">
+            <h2>🛡️ Step 3: Execute Security Policies</h2>
+            <p>Copy the entire content below and paste it into the Supabase SQL Editor:</p>
+            <button class="copy-btn" onclick="copyToClipboard('rls-sql')">📋 Copy RLS SQL</button>
+            <div class="sql-box" id="rls-sql">-- Row Level Security Policies for Rental Business
+-- Apple-Quality Security | Multi-Tenant Support | Admin/Customer Isolation
+
+-- Enable RLS on all tables and create security policies
+-- File: database/enhanced-rls.sql (Full content will be shown in your terminal)</div>
+            <p><strong>Action:</strong> Copy the full content from <code>database/enhanced-rls.sql</code> and execute in Supabase.</p>
+        </div>
+
+        <div class="step success">
+            <h2>🎉 Step 4: Verify Setup</h2>
+            <p>After executing both SQL files:</p>
+            <ol>
+                <li>Visit your admin integration panel</li>
+                <li>Run the health check</li>
+                <li>Use migration tools if needed</li>
+                <li>Start using enhanced features!</li>
+            </ol>
+            <button class="copy-btn" onclick="window.open('http://localhost:3000/admin/integration', '_blank')">Open Integration Panel</button>
+        </div>
+
+        <div class="step warning">
+            <h2>⚡ What You Get</h2>
+            <ul>
+                <li><strong>6 Enhanced Tables:</strong> users, products, orders, order_items, payments, leads, settings</li>
+                <li><strong>Apple-Quality Features:</strong> Real-time availability, automated quotes, payment processing</li>
+                <li><strong>Business Intelligence:</strong> Sales pipeline, analytics, revenue tracking</li>
+                <li><strong>Zero Downtime:</strong> Existing functionality preserved with automatic fallback</li>
+                <li><strong>Complete Security:</strong> Row Level Security with admin/customer isolation</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            navigator.clipboard.writeText(text).then(function() {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#16a34a';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

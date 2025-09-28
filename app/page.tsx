@@ -21,14 +21,14 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-  <HeroSection />
-  {/* SEO: Hero - Party rentals, event design, wedding rentals, modern event furniture, decor, celebration, luxury, sustainable, delivery, setup */}
-  <ProductCategoriesSection />
-  {/* SEO: Product Categories - tabletop, linen, draping, candle holders, pedestals, tables, dining chairs, bar stools, cocktail tables, shelves, bars, accent chairs, sofas, banquet sofas, coffee tables, side tables, backdrops, props */}
-  <RentTheLookSection />
-  {/* SEO: Rent the Look - event inspiration, design sets, curated looks, modern lounge, elegant dining, outdoor chic, event styling */}
-  <FeaturedPackagesSection />
-  {/* SEO: Featured Packages - curated event packages, party themes, wedding packages, festival furniture, lounge sets, outdoor events */}
+      <HeroSection />
+      {/* SEO: Hero - Party rentals, event design, wedding rentals, modern event furniture, decor, celebration, luxury, sustainable, delivery, setup */}
+      <ProductCategoriesSection />
+      {/* SEO: Product Categories - tabletop, linen, draping, candle holders, pedestals, tables, dining chairs, bar stools, cocktail tables, shelves, bars, accent chairs, sofas, banquet sofas, coffee tables, side tables, backdrops, props */}
+      <RentTheLookSection />
+      {/* SEO: Rent the Look - event inspiration, design sets, curated looks, modern lounge, elegant dining, outdoor chic, event styling */}
+      <FeaturedPackagesSection />
+      {/* SEO: Featured Packages - curated event packages, party themes, wedding packages, festival furniture, lounge sets, outdoor events */}
       <HighlightsSection />
       {/* SEO: Highlights - bestsellers, trending rentals, popular event products, unique decor, premium furniture */}
       <NewsTrendsSection />

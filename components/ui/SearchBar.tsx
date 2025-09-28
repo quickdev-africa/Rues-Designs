@@ -24,7 +24,7 @@ export default function SearchBar() {
       >
         <input
           type="search"
-          className="input input-bordered w-full max-w-xs pl-10 pr-4 py-2 rounded-full bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="input input-bordered w-full max-w-xs pl-10 pr-4 py-2 rounded-full bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
           placeholder="Search..."
           value={query}
           onChange={e => setQuery(e.target.value)}
@@ -32,7 +32,7 @@ export default function SearchBar() {
         />
         <button 
           type="submit" 
-          className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary focus:outline-none" 
+          className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37] focus:outline-none" 
           aria-label="Search"
         >
           <HiSearch size={20} />
@@ -41,7 +41,7 @@ export default function SearchBar() {
       
       {/* Mobile Search Icon */}
       <button
-        className="md:hidden p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="md:hidden p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
         aria-label="Open search"
         onClick={() => setShowMobileSearch(true)}
       >
@@ -69,7 +69,7 @@ export default function SearchBar() {
             />
             <button 
               type="submit" 
-              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary focus:outline-none" 
+              className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37] focus:outline-none" 
               aria-label="Search"
             >
               <HiSearch size={20} />

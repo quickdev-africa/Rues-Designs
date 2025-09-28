@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { auth, db } from "../../lib/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { supabase } from "../../lib/supabase";
 import { addProduct, getProducts } from "../../lib/firestore-ops";
 
 export default function FirestoreTestPage() {
@@ -13,25 +11,44 @@ export default function FirestoreTestPage() {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
 
-  // Monitor auth state and fetch user data
+  // Monitor auth state and fetch user profile (Supabase)
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
+    let mounted = true;
+    async function init() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!mounted) return;
+      setUser(user);
       setUserData(null);
-      if (u) {
-        const userRef = doc(db, "users", u.uid);
-        const snap = await getDoc(userRef);
-        if (snap.exists()) {
-          setUserData(snap.data());
+      if (user) {
+        const { data, error } = await supabase
+          .from('users')
+          .select('id, email, role')
+          .eq('id', user.id)
+          .single();
+        if (error && error.code !== 'PGRST116') { // not found is handled below
+          console.error(error);
+        }
+        if (data) {
+          setUserData({ email: data.email, admin: data.role === 'admin' });
         } else {
-          // Create user doc on first login
-          const newUser = { email: u.email, admin: false };
-          await setDoc(userRef, newUser);
-          setUserData(newUser);
+          // Create user row on first login
+          const { data: inserted, error: insertError } = await supabase
+            .from('users')
+            .insert({ id: user.id, email: user.email, role: 'customer' })
+            .select('email, role')
+            .single();
+          if (insertError) {
+            console.error(insertError);
+          }
+          if (inserted) setUserData({ email: inserted.email, admin: inserted.role === 'admin' });
         }
       }
+    }
+    init();
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
     });
-    return () => unsub();
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
   }, []);
 
   useEffect(() => {
@@ -89,13 +106,13 @@ export default function FirestoreTestPage() {
   }
 
   async function handleLogout() {
-    await signOut(auth);
+    await supabase.auth.signOut();
     setSuccess("Logged out.");
   }
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Firestore Test Page</h2>
+  <h2>Supabase Test Page</h2>
       {user && (
         <div style={{ marginBottom: 8 }}>
           Logged in as <b>{user.email}</b>
@@ -103,9 +120,9 @@ export default function FirestoreTestPage() {
           <button onClick={handleLogout} style={{ marginLeft: 16 }}>Log out</button>
         </div>
       )}
-      {!user && <div style={{ color: 'orange', marginBottom: 8 }}>Please log in to use Firestore features.</div>}
+  {!user && <div style={{ color: 'orange', marginBottom: 8 }}>Please log in to use Supabase features.</div>}
       {!userData?.admin && user && (
-        <div style={{ color: 'red', marginBottom: 8 }}>You are not an admin. Ask a project owner to set <b>admin: true</b> in your user document in Firestore.</div>
+  <div style={{ color: 'red', marginBottom: 8 }}>You are not an admin. Ask a project owner to set <b>role: 'admin'</b> in your user row in Supabase.</div>
       )}
       <button onClick={handleAddProduct} disabled={loading || !userData?.admin}>Add Test Product</button>
       <button onClick={handleGetProducts} disabled={loading || !user}>Get Products</button>
@@ -118,12 +135,11 @@ export default function FirestoreTestPage() {
         ))}
       </ul>
       <div style={{ marginTop: 24, fontSize: 14, color: '#555' }}>
-        <strong>How to check in Firebase Console:</strong>
+        <strong>How to check in Supabase:</strong>
         <ol>
-          <li>Go to <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer">Firebase Console</a>.</li>
+          <li>Go to <a href="https://app.supabase.com/" target="_blank" rel="noopener noreferrer">Supabase Dashboard</a>.</li>
           <li>Select your project.</li>
-          <li>Click <b>Firestore Database</b> in the left sidebar.</li>
-          <li>Expand the <b>products</b> collection to see your test product.</li>
+          <li>Open <b>Table editor</b> and view the <b>products</b> and <b>users</b> tables.</li>
         </ol>
       </div>
     </div>

@@ -1,12 +1,17 @@
 
 import '../styles/globals.css';
 import Layout from '../components/layout/Layout';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: 'Rues Design & Rental',
   description: 'Party rental and event design made easy. Discover, book, and celebrate with Rues.',
-  viewport: 'width=device-width, initial-scale=1',
+  metadataBase: new URL('https://ruesdesign.com'),
   openGraph: {
     title: 'Rues Design & Rental',
     description: 'Party rental and event design made easy. Discover, book, and celebrate with Rues.',

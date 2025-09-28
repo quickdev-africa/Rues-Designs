@@ -9,13 +9,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'var(--color-primary)',
+        primary: '#D4AF37',
         secondary: 'var(--color-secondary)',
-        accent: 'var(--color-accent)',
+        accent: '#D4AF37',
         success: 'var(--color-success)',
         warning: 'var(--color-warning)',
         error: 'var(--color-error)',
         white: 'var(--color-white)',
+        brand: {
+          gold: '#D4AF37',
+          'gold-light': '#E8D192',
+          'gold-dark': '#B39428',
+        },
         gold: {
           100: '#FFF6E5',
           200: '#FFEBC5',

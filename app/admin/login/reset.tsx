@@ -1,6 +1,7 @@
+"use client";
 import { useState } from "react";
-import { auth } from "../../../lib/firebase";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { supabase } from "../../../lib/supabase";
+import Link from "next/link";
 
 export default function AdminResetPassword() {
   const [email, setEmail] = useState("");
@@ -14,10 +15,13 @@ export default function AdminResetPassword() {
     setError("");
     setMessage("");
     try {
-      await sendPasswordResetEmail(auth, email);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/admin/login/update-password`,
+      });
+      if (error) throw error;
       setMessage("Password reset email sent. Check your inbox.");
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Failed to send reset email");
     }
     setLoading(false);
   }
@@ -37,6 +41,8 @@ export default function AdminResetPassword() {
         <button type="submit" className="bg-primary text-white py-2 rounded" disabled={loading}>
           {loading ? "Sending..." : "Send Reset Email"}
         </button>
+        <p className="text-sm text-gray-600">After clicking the email link, you will be redirected here to set a new password.</p>
+        <Link href="/admin/login" className="text-blue-600 text-sm underline text-center">Back to login</Link>
         {message && <div className="text-green-600 text-sm">{message}</div>}
         {error && <div className="text-red-600 text-sm">{error}</div>}
       </form>

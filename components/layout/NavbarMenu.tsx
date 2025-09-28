@@ -1,12 +1,13 @@
 "use client";
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiMenu, HiX } from 'react-icons/hi';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Us' },
-  { href: '/products', label: 'Shop' },
+  { href: '/shop', label: 'Shop' },
   { href: '/collections', label: 'Collections' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/contact', label: 'Contact' },
@@ -14,6 +15,15 @@ const navLinks = [
 
 export default function NavbarMenu() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  
+  // Check if the current path matches the link
+  const isActive = (href: string) => {
+    if (href === '/' && pathname === '/') return true;
+    if (href !== '/' && pathname?.startsWith(href)) return true;
+    return false;
+  };
+  
   return (
     <nav aria-label="Main navigation">
       {/* Desktop Menu */}
@@ -22,17 +32,23 @@ export default function NavbarMenu() {
           <Link 
             key={link.href} 
             href={link.href} 
-            className="text-gray-700 hover:text-primary font-medium transition-colors py-2 relative group"
+            className={`font-medium transition-colors py-2 relative group ${
+              isActive(link.href) 
+                ? 'text-[#D4AF37]' 
+                : 'text-gray-700 hover:text-[#D4AF37]'
+            }`}
           >
             {link.label}
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+            <span className={`absolute bottom-0 left-0 h-0.5 bg-[#D4AF37] transition-all duration-300 ${
+              isActive(link.href) ? 'w-full' : 'w-0 group-hover:w-full'
+            }`}></span>
           </Link>
         ))}
       </div>
       
       {/* Mobile Menu Button */}
       <button
-        className="lg:hidden p-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="lg:hidden p-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
         aria-label="Open menu"
         onClick={() => setOpen(true)}
       >
@@ -47,7 +63,7 @@ export default function NavbarMenu() {
             <div className="flex items-center justify-between p-4 border-b">
               <span className="text-lg font-semibold">Menu</span>
               <button
-                className="p-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="p-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
               >
@@ -61,7 +77,11 @@ export default function NavbarMenu() {
                 <Link 
                   key={link.href} 
                   href={link.href} 
-                  className="block px-6 py-3 text-gray-900 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                  className={`block px-6 py-3 border-b border-gray-100 last:border-b-0 ${
+                    isActive(link.href)
+                      ? 'text-[#D4AF37] bg-gray-50'
+                      : 'text-gray-900 hover:bg-gray-50'
+                  }`}
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
@@ -73,7 +93,7 @@ export default function NavbarMenu() {
             <div className="border-t border-gray-200 p-4">
               <Link 
                 href="/account" 
-                className="block w-full py-2 px-4 text-center bg-primary text-white rounded-md hover:bg-primary/90"
+                className="block w-full py-2 px-4 text-center bg-[#D4AF37] text-white rounded-md hover:bg-[#C09F27]"
                 onClick={() => setOpen(false)}
               >
                 My Account
