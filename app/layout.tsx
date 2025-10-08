@@ -25,7 +25,9 @@ export const metadata: Metadata = {
     description: 'Party rental and event design made easy. Discover, book, and celebrate with Rues.',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
   },
 };
 

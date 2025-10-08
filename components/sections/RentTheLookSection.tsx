@@ -10,13 +10,13 @@ const looks = [
     title: 'Modern Lounge',
     description: 'Curated lounge sets for stylish events.',
     image: '/images/stock/look-lounge.jpg',
-    link: '/collections/modern-lounge',
+    link: '/features',
   },
   {
     title: 'Elegant Dining',
     description: 'Beautiful dining setups for any occasion.',
     image: '/images/stock/look-dining.jpg',
-    link: '/collections/elegant-dining',
+    link: '/features',
   },
 ];
 

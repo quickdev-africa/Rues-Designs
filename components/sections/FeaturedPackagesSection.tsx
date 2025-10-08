@@ -9,17 +9,17 @@ const packages = [
   {
     title: 'Wedding Worlds',
     image: '/images/stock/featured-wedding.jpg',
-    link: '/packages/wedding',
+    link: '/shop/categories',
   },
   {
     title: 'Summer Breeze Lounge & Dine',
     image: '/images/stock/featured-lounge.jpg',
-    link: '/packages/lounge-dine',
+    link: '/shop/categories',
   },
   {
     title: 'Large Barbecue & Champagne Spritzer',
     image: '/images/stock/featured-bbq.jpg',
-    link: '/packages/bbq',
+    link: '/shop/categories',
   },
 ];
 
