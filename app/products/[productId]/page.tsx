@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useWishlist } from "../../../components/ui/WishlistContext";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
@@ -23,6 +24,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params?.productId as string;
   const { addItem } = useCart();
+  const { addItem: addWishlist, items: wishlistItems } = useWishlist();
 
   const [product, setProduct] = useState(defaultProduct);
   const [selectedColor, setSelectedColor] = useState("");
@@ -94,6 +96,19 @@ export default function ProductDetailPage() {
     }, 500);
   };
 
+  // Wishlist logic
+  const isWishlisted = wishlistItems.some(i => i.id === product.id);
+  const handleAddToWishlist = () => {
+    if (!isWishlisted) {
+      addWishlist({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: selectedImage,
+      });
+    }
+  };
+
   return (
     <main className="bg-white min-h-screen font-sans">
       {/* Breadcrumb */}
@@ -142,7 +157,13 @@ export default function ProductDetailPage() {
           <button className="w-full bg-[#D4AF36] text-white font-semibold py-3 rounded-lg text-lg transition hover:bg-[#bfa12e] disabled:opacity-60" onClick={handleAddToCart} disabled={loading}>
             {loading ? "Adding..." : "Add to Cart"}
           </button>
-          <button className="w-full border border-[#D4AF36] text-[#D4AF36] font-semibold py-3 rounded-lg text-lg mt-2 transition hover:bg-[#f9f6ef]">Add to Wishlist</button>
+          <button
+            className={`w-full border border-[#D4AF36] font-semibold py-3 rounded-lg text-lg mt-2 transition hover:bg-[#f9f6ef] ${isWishlisted ? 'bg-[#D4AF36] text-white' : 'text-[#D4AF36]'}`}
+            onClick={handleAddToWishlist}
+            disabled={isWishlisted}
+          >
+            {isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+          </button>
           <a href="/contact" className="block text-center text-blue-600 text-sm mt-2 hover:underline">Need help? Contact us</a>
         </div>
         {/* Right: Product Image */}
