@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import seamlessOps from './seamless-integration'
+import { seamlessOps } from './seamless-integration'
 
 type Updatable = Record<string, any>
 

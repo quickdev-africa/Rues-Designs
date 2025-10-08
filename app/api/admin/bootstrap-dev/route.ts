@@ -1,1 +1,3 @@
-// Deleted: Backend bootstrap-dev API route
+export async function GET() {
+	return new Response('Bootstrap dev route is active.', { status: 200 });
+}

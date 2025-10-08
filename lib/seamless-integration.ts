@@ -1,3 +1,38 @@
+// Map legacy product fields to enhanced format
+function transformProductFromLegacy(product: any): any {
+  return {
+    id: product.id,
+    name: product.name,
+    description: product.description ?? '',
+    daily_rate: product.price ?? product.daily_rate ?? 0,
+    category: product.category ?? '',
+    subCategory: product.subCategory ?? '',
+    images: product.imageUrl ? [product.imageUrl] : [],
+    tags: product.tags ?? [],
+    is_active: product.inStock ?? product.is_active ?? true,
+    isNew: product.isNew ?? false,
+    isPopular: product.isPopular ?? false,
+    // Add other mappings as needed
+  };
+}
+
+// Map enhanced user fields to legacy format
+function transformUserToLegacy(user: any): any {
+  return {
+    id: user.id,
+    email: user.email,
+    full_name: user.full_name ?? user.name ?? '',
+    phone: user.phone ?? '',
+    address: user.address ?? {},
+    role: user.role ?? 'customer',
+    avatar_url: user.avatar_url ?? '',
+    is_active: user.is_active ?? true,
+    last_login: user.last_login ?? '',
+    created_at: user.created_at ?? '',
+    updated_at: user.updated_at ?? '',
+    // Add other mappings as needed
+  };
+}
 // Seamless Integration Layer - Bridges existing code with enhanced backend
 // Maintains 100% backward compatibility while adding new features
 
@@ -21,7 +56,28 @@ import {
   type Setting
 } from './enhanced-rental-ops'
 
+
 // ===== SEAMLESS INTEGRATION UTILITIES =====
+
+// Map enhanced product fields to legacy format
+function transformProductToLegacy(product: any): any {
+  return {
+    id: product.id,
+    name: product.name,
+    description: product.description ?? '',
+    price: product.daily_rate ?? product.price ?? 0,
+    category: product.category ?? '',
+    subCategory: product.subCategory ?? '',
+    rating: product.rating ?? 5,
+    reviewCount: product.reviewCount ?? 0,
+    inStock: product.is_active ?? product.inStock ?? true,
+    imageUrl: Array.isArray(product.images) ? product.images[0] : '',
+    isNew: product.isNew ?? false,
+    isPopular: product.isPopular ?? false,
+    tags: product.tags ?? [],
+    // Add other mappings as needed
+  };
+}
 
 
 // ===== ENHANCED OPERATIONS WITH LEGACY COMPATIBILITY =====

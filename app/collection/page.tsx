@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import HeroSection from '@/components/layout/HeroSection';
+import HeroSection from '@/components/shop/HeroSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -57,8 +57,8 @@ export default function CollectionPage() {
       <HeroSection
         imageUrl="/images/hero_pg2.jpg"
         title="Product Categories"
-        subtitle="Explore our premium event rental inventory by category. From tableware to furniture, we have everything to create your perfect event."
-        height="h-[50vh]"
+  description="Explore our premium event rental inventory by category. From tableware to furniture, we have everything to create your perfect event."
+  height="large"
       />
       <div className="container mx-auto px-4 py-4">
         <Breadcrumbs

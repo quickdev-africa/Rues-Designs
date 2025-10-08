@@ -14,8 +14,9 @@ export async function GET() {
 
   try {
     // Step 1: Delete the old auth user completely
-    const { data: authUsers } = await supabase.auth.admin.listUsers()
-    const oldUser = authUsers.users.find(u => u.email?.includes('gmial') || u.email?.includes('gmail'))
+  const { data: authUsers } = await supabase.auth.admin.listUsers()
+  type SupabaseUser = { id: string; email?: string };
+  const oldUser = (authUsers?.users as SupabaseUser[] ?? []).find(u => u.email?.includes('gmial') || u.email?.includes('gmail'))
     
     if (oldUser) {
       const { error: deleteAuthError } = await supabase.auth.admin.deleteUser(oldUser.id)

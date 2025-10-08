@@ -90,15 +90,15 @@ export default function AboutPage() {
                 We’ve helped clients craft weddings, dinners, corporate events, and styled shoots that feel timeless, personal, and deeply intentional. With each project, we refine the art of modern rentals — where form meets feeling.
               </p>
               {/* Image Block */}
-        <div class="mt-8 relative h-96 rounded-lg overflow-hidden shadow-xl bg-gradient-to-br from-amber-100 to-amber-50">
+    <div className="mt-8 relative h-96 rounded-lg overflow-hidden shadow-xl bg-gradient-to-br from-amber-100 to-amber-50">
             
-            <img 
-                src="/images/about/styled-outdoor-event.jpg" 
-                alt="The Rues Design team setting up an event" 
-                class="w-full h-full object-cover"
-                loading="eager"
-            />
-        </div>
+      <img 
+        src="/images/about/styled-outdoor-event.jpg" 
+        alt="The Rues Design team setting up an event" 
+        className="w-full h-full object-cover"
+        loading="eager"
+      />
+    </div>
             </div>
           </section>
         {/* Ready to Create Something Beautiful Section (preserved) */}
