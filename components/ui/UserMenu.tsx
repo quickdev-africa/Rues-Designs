@@ -1,25 +1,38 @@
 "use client";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { HiUserCircle } from 'react-icons/hi';
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   // This would come from your auth context in a real app
   const isLoggedIn = false;
-  
+
+  // Open dropdown on mouse enter
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(true);
+  };
+  // Close dropdown on mouse leave (with slight delay for smoothness)
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => setOpen(false), 120);
+  };
+
   return (
-    <div className="relative">
+    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <button
         className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
         aria-label="My Account"
         onClick={() => setOpen(v => !v)}
         title="My Account"
       >
-        <HiUserCircle size={28} className="text-gray-500" />
+        <HiUserCircle size={20} className="text-black" />
       </button>
       {open && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100">
+        <div
+          className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100"
+        >
           {isLoggedIn ? (
             <>
               <div className="px-4 py-3 border-b border-gray-100">

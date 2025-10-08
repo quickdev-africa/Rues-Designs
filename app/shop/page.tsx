@@ -333,9 +333,9 @@ function ShopPageContent() {
 }
 
 export default function ShopPage() {
-  return (
-    <Suspense fallback={<div className="p-8">Loading shop…</div>}>
-      <ShopPageContent />
-    </Suspense>
-  );
+  if (typeof window !== "undefined") {
+    window.location.replace("/collection");
+    return null;
+  }
+  return null;
 }

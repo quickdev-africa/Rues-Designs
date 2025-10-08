@@ -4,7 +4,7 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { categoryInfo, CategoryInfo } from '../../../../data/categoryData';
-import { products } from '../../../../data/shopData';
+import { supabase } from '../../../../lib/supabase';
 import HeroSection from '../../../../components/shop/HeroSection';
 import Breadcrumbs from '../../../../components/ui/Breadcrumbs';
 import ProductGrid from '../../../../components/shop/ProductGrid';
@@ -15,8 +15,32 @@ export default function CategoryPage() {
   const { categoryId } = useParams();
   const category: CategoryInfo | undefined = categoryInfo[categoryId as string];
   
-  // Filter products by category
-  const categoryProducts = products.filter(p => p.categoryId === categoryId);
+  const [categoryProducts, setCategoryProducts] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    async function fetchProducts() {
+      if (!categoryId) return;
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, slug, description, daily_rate, category, images')
+        .eq('category', categoryId);
+      if (error || !data) {
+        setCategoryProducts([]);
+      } else {
+        // Map Supabase fields to ProductGrid format
+        const mapped = (data || []).map(p => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          description: p.description,
+          price: p.daily_rate,
+          category: p.category,
+          images: Array.isArray(p.images) ? p.images : [],
+        }));
+        setCategoryProducts(mapped);
+      }
+    }
+    fetchProducts();
+  }, [categoryId]);
   
   if (!category) {
     return (
@@ -38,7 +62,7 @@ export default function CategoryPage() {
       <HeroSection 
         title={category.name}
         description={category.description}
-        imageUrl={placeholderImage(category.bannerImage)}
+  imageUrl="/images/hero_category_all.jpg" // Use the provided elegant table setup image
         height="medium"
       />
       
@@ -59,7 +83,7 @@ export default function CategoryPage() {
           <h2 className="text-2xl font-semibold mb-2 md:mb-0">
             {categoryProducts.length} items in {category.name}
           </h2>
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
             <select 
               className="border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-brand-primary"
               defaultValue="featured"
@@ -69,6 +93,7 @@ export default function CategoryPage() {
               <option value="price-high">Price: High to Low</option>
               <option value="newest">Newest First</option>
             </select>
+            <Link href="/shop/categories" className="ml-2 text-brand-primary underline text-sm font-medium whitespace-nowrap">Go back to collection</Link>
           </div>
         </div>
         

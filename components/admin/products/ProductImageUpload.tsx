@@ -65,7 +65,7 @@ export default function ProductImageUpload({ productId, onUploaded }: {
       />
   {progress > 0 && <progress className="progress w-full" value={progress} max={100} />}
       {error && <div className="text-error">{error}</div>}
-      <button className="btn btn-secondary" type="submit" disabled={uploading || !file}>
+      <button className="btn bg-[#D4AF36] text-white" type="submit" disabled={uploading || !file}>
         {uploading ? "Uploading..." : "Upload Image"}
       </button>
     </form>

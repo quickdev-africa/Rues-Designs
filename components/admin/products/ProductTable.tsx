@@ -20,10 +20,9 @@ export default function ProductTable() {
   useEffect(() => {
     let active = true;
     async function load() {
-      // Fetch from Supabase and normalize fields for UI
       const { data, error } = await supabase
         .from('products')
-        .select('id, name, status, created_at, images, categories, pricing')
+        .select('id, name, created_at, images, category, pricing, description')
         .order('created_at', { ascending: false });
       if (!active) return;
       if (error) {
@@ -31,12 +30,12 @@ export default function ProductTable() {
       } else {
         const mapped = (data || []).map(p => ({
           id: p.id,
-          name: (p as any).name,
-          status: (p as any).status || 'active',
-          created_at: (p as any).created_at,
-          imageUrl: Array.isArray((p as any).images) ? (p as any).images[0] : '',
-          category: Array.isArray((p as any).categories) ? (p as any).categories[0] : '-',
-          price: typeof (p as any).pricing === 'object' && (p as any).pricing ? ((p as any).pricing.price ?? (p as any).pricing.base ?? 0) : 0,
+          name: p.name,
+          created_at: p.created_at,
+          imageUrl: Array.isArray(p.images) ? p.images[0] : '',
+          category: p.category || '-',
+          price: typeof p.pricing === 'object' && p.pricing ? (p.pricing.price ?? p.pricing.base ?? 0) : 0,
+          description: p.description || '',
         }));
         setProducts(mapped);
       }
@@ -46,19 +45,21 @@ export default function ProductTable() {
     return () => { active = false };
   }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("Are you sure you want to delete this product?")) return;
-    setDeletingId(id);
-    setError("");
-    try {
-      const { error } = await supabase.from('products').delete().eq('id', id);
-      if (error) throw error;
-      setProducts(prev => prev.filter(p => p.id !== id));
-    } catch (err: any) {
-      setError(err.message || "Error deleting product");
-    } finally {
-      setDeletingId(null);
+  function handleSort(field: string) {
+    if (sortBy === field) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortDir("asc");
     }
+  }
+
+  function handleSelect(id: string, checked: boolean) {
+    setSelected(prev => checked ? [...prev, id] : prev.filter(sid => sid !== id));
+  }
+
+  function handleSelectAll(checked: boolean) {
+    setSelected(checked ? paginated.map(p => p.id) : []);
   }
 
   async function handleBatchDelete() {
@@ -78,16 +79,23 @@ export default function ProductTable() {
     }
   }
 
-  function handleSelect(id: string, checked: boolean) {
-    setSelected(prev => checked ? [...prev, id] : prev.filter(sid => sid !== id));
+  async function handleDelete(id: string) {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    setDeletingId(id);
+    setError("");
+    try {
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) throw error;
+      setProducts(prev => prev.filter(p => p.id !== id));
+    } catch (err: any) {
+      setError(err.message || "Error deleting product");
+    } finally {
+      setDeletingId(null);
+    }
   }
 
-  function handleSelectAll(checked: boolean) {
-    setSelected(checked ? products.map(p => p.id) : []);
-  }
-
-  if (loading) return <div>Loading...</div>;
-  if (!products.length) return <div>No products found.</div>;
+  if (loading) return <div className="admin-ui">Loading...</div>;
+  if (!products.length) return <div className="admin-ui">No products found.</div>;
 
   // Filter by search
   const filtered = products.filter((p: any) =>
@@ -112,17 +120,8 @@ export default function ProductTable() {
   const clampedPage = Math.min(page, totalPages);
   const paginated = sorted.slice((clampedPage - 1) * pageSize, clampedPage * pageSize);
 
-  function handleSort(field: string) {
-    if (sortBy === field) {
-      setSortDir(sortDir === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(field);
-      setSortDir("asc");
-    }
-  }
-
   return (
-    <div className="overflow-x-auto">
+    <div className="admin-ui overflow-x-auto">
       {editProduct && (
         <ProductEditModal
           product={editProduct}
@@ -139,7 +138,8 @@ export default function ProductTable() {
           onChange={e => { setSearch(e.target.value); setPage(1); }}
         />
         <button
-          className="btn btn-sm btn-error"
+          className="btn btn-sm bg-gold text-white"
+          style={{ backgroundColor: '#D4AF36' }}
           onClick={handleBatchDelete}
           disabled={!selected.length || batchLoading}
         >
@@ -147,8 +147,8 @@ export default function ProductTable() {
         </button>
         <span className="text-xs text-gray-500">Batch actions: select multiple products to delete</span>
       </div>
-      <table className="table w-full">
-        <thead>
+      <table className="min-w-full divide-y divide-gold" style={{ borderColor: '#D4AF36' }}>
+        <thead className="bg-gold/10">
           <tr>
             <th className="w-8">
               <input
@@ -157,17 +157,17 @@ export default function ProductTable() {
                 onChange={e => handleSelectAll(e.target.checked)}
               />
             </th>
-            <th className="cursor-pointer w-56" onClick={() => handleSort("name")}>Name {sortBy === "name" && (sortDir === "asc" ? "▲" : "▼")}</th>
-            <th className="cursor-pointer w-40" onClick={() => handleSort("category")}>Category {sortBy === "category" && (sortDir === "asc" ? "▲" : "▼")}</th>
-            <th className="cursor-pointer w-24" onClick={() => handleSort("price")}>Price {sortBy === "price" && (sortDir === "asc" ? "▲" : "▼")}</th>
-            <th className="cursor-pointer w-24" onClick={() => handleSort("status")}>Status {sortBy === "status" && (sortDir === "asc" ? "▲" : "▼")}</th>
-            <th className="cursor-pointer w-40" onClick={() => handleSort("createdAt")}>Created {sortBy === "createdAt" && (sortDir === "asc" ? "▲" : "▼")}</th>
-            <th className="w-32">Actions</th>
+            <th className="cursor-pointer w-56 px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider" onClick={() => handleSort("name")}>Name {sortBy === "name" && (sortDir === "asc" ? "\u25b2" : "\u25bc")}</th>
+            <th className="cursor-pointer w-40 px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider" onClick={() => handleSort("category")}>Category {sortBy === "category" && (sortDir === "asc" ? "\u25b2" : "\u25bc")}</th>
+            <th className="cursor-pointer w-24 px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider" onClick={() => handleSort("price")}>Price {sortBy === "price" && (sortDir === "asc" ? "\u25b2" : "\u25bc")}</th>
+            <th className="cursor-pointer w-64 px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider" onClick={() => handleSort("description")}>Product Information</th>
+            <th className="cursor-pointer w-40 px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider" onClick={() => handleSort("createdAt")}>Created {sortBy === "createdAt" && (sortDir === "asc" ? "\u25b2" : "\u25bc")}</th>
+            <th className="w-32 px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gold/20">
           {paginated.map((product) => (
-            <tr key={product.id} className="hover:bg-base-200 transition">
+            <tr key={product.id} className="hover:bg-gold/10 transition">
               <td>
                 <input
                   type="checkbox"
@@ -182,27 +182,28 @@ export default function ProductTable() {
                   ) : (
                     <div className="w-10 h-10 rounded bg-base-300 flex items-center justify-center text-xs text-gray-400">No Image</div>
                   )}
-                  <span className="font-semibold" title={product.name}>{product.name}</span>
+                  <span className="font-semibold text-black" title={product.name}>{product.name}</span>
                 </div>
               </td>
               <td>
                 <span className="badge badge-outline" title={product.category}>{product.category}</span>
               </td>
               <td>
-                <span className="font-mono">${product.price}</span>
+                <span className="font-mono text-black">${product.price}</span>
               </td>
               <td>
-                <span className={`badge ${product.status === "active" ? "badge-success" : "badge-ghost"}`}>{product.status}</span>
+                <span className="text-xs text-black" title={product.description}>{product.description?.slice(0, 80) || '-'}</span>
               </td>
               <td>
-                <span className="text-xs" title={product.createdAt?.toDate?.().toLocaleString?.() || "-"}>
+                <span className="text-xs text-black" title={product.createdAt?.toDate?.().toLocaleString?.() || "-"}>
                   {product.createdAt?.toDate?.().toLocaleDateString?.() || "-"}
                 </span>
               </td>
               <td>
                 <div className="flex gap-2">
                   <button
-                    className="btn btn-xs btn-primary"
+                    className="btn btn-xs bg-gold text-white"
+                    style={{ backgroundColor: '#D4AF36' }}
                     onClick={() => setEditProduct(product)}
                     title="Edit product"
                   >
@@ -223,9 +224,9 @@ export default function ProductTable() {
         </tbody>
       </table>
       <div className="mt-4 flex justify-center gap-2">
-        <button className="btn btn-sm" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>
-        <span className="text-sm">Page {page} of {totalPages}</span>
-        <button className="btn btn-sm" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Next</button>
+        <button className="btn btn-sm bg-gold text-white" style={{ backgroundColor: '#D4AF36' }} onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>Prev</button>
+        <span className="text-sm text-black">Page {page} of {totalPages}</span>
+        <button className="btn btn-sm bg-gold text-white" style={{ backgroundColor: '#D4AF36' }} onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Next</button>
       </div>
     </div>
   );

@@ -89,7 +89,7 @@ export default function StaffInviteForm({ onInvited }: { onInvited?: () => void 
           <option value="admin">Admin</option>
           <option value="staff">Staff</option>
         </select>
-        <button className="bg-gray-900 text-white rounded-md px-4 py-2 hover:bg-black transition-colors disabled:opacity-60" type="submit" disabled={loading}>
+        <button className="bg-[#D4AF36] text-white rounded-md px-4 py-2 hover:bg-[#C19A2B] transition-colors disabled:opacity-60" type="submit" disabled={loading}>
           {loading ? "Inviting..." : "Invite"}
         </button>
       </div>

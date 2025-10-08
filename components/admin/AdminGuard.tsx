@@ -10,12 +10,12 @@ const supabase = createClient(
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     let isMounted = true;
-    async function checkAdmin() {
+    async function checkRole() {
       setLoading(true);
       const { data: sessionData } = await supabase.auth.getSession();
       const session = sessionData?.session;
@@ -30,20 +30,21 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
         .eq("id", userId)
         .single();
       if (isMounted) {
-        setIsAdmin(data?.role === "admin");
+        setRole(data?.role || null);
         setLoading(false);
-        if (data?.role !== "admin") {
+        if (!["admin", "operations", "warehouse"].includes(data?.role)) {
           router.replace("/admin/login");
         }
       }
     }
-    checkAdmin();
+    checkRole();
     return () => {
       isMounted = false;
     };
   }, [router]);
 
   if (loading) return <div className="p-12 text-center text-gray-700">Checking admin access...</div>;
-  if (!isAdmin) return null;
+  if (!role) return null;
+  // Optionally, you can restrict children based on role here
   return <>{children}</>;
 }

@@ -17,6 +17,7 @@ interface Order {
 }
 
 export default function OrdersTable() {
+  const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,9 +51,8 @@ export default function OrdersTable() {
     return () => { active = false };
   }, []);
 
-  if (loading) return <div>Loading orders...</div>;
+  if (loading) return <div className="admin-ui">Loading orders...</div>;
 
-  const router = useRouter();
   const handleView = (orderId: string) => {
     router.push(`/admin/orders/${orderId}`);
   };
@@ -67,30 +67,30 @@ export default function OrdersTable() {
     }
   };
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow p-4">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="admin-ui overflow-x-auto bg-white rounded-lg shadow p-4">
+      <table className="min-w-full divide-y divide-gold" style={{ borderColor: "#D4AF36" }}>
+        <thead className="bg-gold/10">
           <tr>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Order ID</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Customer</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Total</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Zone</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Delivery Fee</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Date</th>
-            <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Actions</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Order ID</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Customer</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Status</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Total</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Zone</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Delivery Fee</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Date</th>
+            <th className="px-4 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-100">
+        <tbody className="bg-white divide-y divide-gold/20">
           {orders.map(order => (
-            <tr key={order.id} className="hover:bg-gray-50">
-              <td className="px-4 py-2 text-gray-900 font-mono">{order.id}</td>
-              <td className="px-4 py-2 text-gray-900">{order.customerName}</td>
+            <tr key={order.id} className="hover:bg-gold/10">
+              <td className="px-4 py-2 text-black font-mono">{order.id}</td>
+              <td className="px-4 py-2 text-black">{order.customerName}</td>
               <td className="px-4 py-2"><OrderStatusBadge status={order.status} /></td>
-              <td className="px-4 py-2 text-gray-900 font-semibold">${order.total.toFixed(2)}</td>
-              <td className="px-4 py-2 text-gray-900">{order.zone || '-'}</td>
-              <td className="px-4 py-2 text-gray-900">{order.deliveryFee ? `$${order.deliveryFee}` : '-'}</td>
-              <td className="px-4 py-2 text-gray-700">{new Date(order.createdAt).toLocaleDateString()}</td>
+              <td className="px-4 py-2 text-black font-semibold">${order.total.toFixed(2)}</td>
+              <td className="px-4 py-2 text-black">{order.zone || '-'}</td>
+              <td className="px-4 py-2 text-black">{order.deliveryFee ? `$${order.deliveryFee}` : '-'}</td>
+              <td className="px-4 py-2 text-black">{new Date(order.createdAt).toLocaleDateString()}</td>
               <td className="px-4 py-2"><OrderActions orderId={order.id} onView={() => handleView(order.id)} onDelete={() => handleDelete(order.id)} /></td>
             </tr>
           ))}

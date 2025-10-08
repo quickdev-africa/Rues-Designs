@@ -30,13 +30,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-white">
+      <div className="flex min-h-screen bg-white text-black admin-ui">
         <style jsx global>{`
           body.admin-route header, body.admin-route footer { display: none !important; }
-          body.admin-route { background: #ffffff; }
+          body.admin-route {
+            background: var(--color-secondary);
+            color: var(--color-primary);
+            font-family: var(--font-admin);
+          }
         `}</style>
         <AdminSidebar />
-        <main className="flex-1 bg-white p-6 overflow-auto">{children}</main>
+        <main className="flex-1 bg-white p-6 overflow-auto admin-ui">{children}</main>
       </div>
     </AdminGuard>
   );

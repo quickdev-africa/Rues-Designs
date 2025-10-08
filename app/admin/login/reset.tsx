@@ -38,7 +38,7 @@ export default function AdminResetPassword() {
           className="border p-2 rounded"
           required
         />
-        <button type="submit" className="bg-primary text-white py-2 rounded" disabled={loading}>
+  <button type="submit" className="bg-[#D4AF36] text-white py-2 rounded hover:bg-[#C19A2B] transition-colors" disabled={loading}>
           {loading ? "Sending..." : "Send Reset Email"}
         </button>
         <p className="text-sm text-gray-600">After clicking the email link, you will be redirected here to set a new password.</p>

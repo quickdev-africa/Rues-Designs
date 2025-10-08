@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
         onSubmit={isCreatingAdmin ? handleCreateAdmin : handleLogin}
         className="bg-white border border-gray-200 p-8 rounded-lg w-full max-w-md flex flex-col gap-4 shadow-sm"
       >
-        <h1 className="text-xl font-semibold text-gray-900 mb-2">
+  <h1 className="heading-1 text-gray-900 mb-2">
           {isCreatingAdmin ? "Create Admin" : "Admin Login"}
         </h1>
         {isCreatingAdmin && (
@@ -127,11 +127,11 @@ export default function AdminLoginPage() {
           className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-400"
           required
         />
-        <button type="submit" className="mt-2 bg-gray-900 text-white py-2 rounded-md hover:bg-black transition-colors disabled:opacity-60" disabled={loading}>
+  <button type="submit" className="mt-2 bg-[#D4AF36] text-white py-2 rounded-md hover:bg-[#C19A2B] transition-colors disabled:opacity-60" disabled={loading}>
           {loading ? (isCreatingAdmin ? "Creating Admin..." : "Logging in...") : (isCreatingAdmin ? "Create Admin" : "Sign in")}
         </button>
         {!isCreatingAdmin && (
-          <button type="button" onClick={handleGoogle} className="bg-white text-gray-900 border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-60" disabled={loading}>
+          <button type="button" onClick={handleGoogle} className="bg-white text-[#D4AF36] border border-[#D4AF36] py-2 rounded-md hover:bg-[#D4AF36]/10 transition-colors disabled:opacity-60" disabled={loading}>
             {loading ? "Please wait..." : "Continue with Google"}
           </button>
         )}
@@ -146,7 +146,7 @@ export default function AdminLoginPage() {
               setPassword("");
               setFullName("");
             }}
-            className="text-gray-700 underline hover:text-gray-900"
+            className="text-[#D4AF36] underline hover:text-[#C19A2B]"
           >
             {isCreatingAdmin ? "Back to Login" : "Create New Admin"}
           </button>

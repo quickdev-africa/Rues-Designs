@@ -17,8 +17,8 @@ const nav = [
 export default function AdminSidebar() {
   const pathname = usePathname();
   return (
-    <aside className="w-64 bg-white text-gray-900 border-r border-gray-200 flex flex-col p-4 min-h-screen">
-      <h2 className="font-semibold text-base tracking-wide mb-4">Admin</h2>
+  <aside className="w-64 bg-white text-black border-r border-gray-200 flex flex-col p-4 min-h-screen font-body">
+      <h2 className="font-heading text-lg tracking-wide mb-4 text-gold">Admin</h2>
       <nav className="flex flex-col gap-1">
         {nav.map((item) => {
           const active = pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -26,10 +26,10 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-md px-3 py-2 text-sm transition-colors ${
+              className={`rounded-md px-3 py-2 text-sm font-body transition-colors ${
                 active
-                  ? "bg-gray-100 font-medium"
-                  : "hover:bg-gray-50"
+                  ? "bg-gold text-primary font-semibold"
+                  : "hover:bg-gold hover:text-primary"
               }`}
             >
               {item.label}

@@ -7,21 +7,21 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import AnimatedSection from '../ui/AnimatedSection';
 
 const categories = [
-  { name: 'TABLETOP', image: '/images/stock/category-tabletop.png', link: '/shop?category=tabletop' },
-  { name: 'LINEN', image: '/images/stock/category-linen.png', link: '/shop?category=linen' },
-  { name: 'DRAPING', image: '/images/stock/category-draping.png', link: '/shop?category=draping' },
-  { name: 'CANDELABRAS AND CANDLE HOLDERS', image: '/images/stock/category-candle.png', link: '/shop?category=candles' },
-  { name: 'PEDESTALS', image: '/images/stock/category-pedestals.png', link: '/shop?category=pedestals' },
-  { name: 'TABLES', image: '/images/stock/category-tables.png', link: '/shop?category=tables' },
-  { name: 'DINING CHAIRS', image: '/images/stock/category-dining-chairs.png', link: '/shop?category=dining-chairs' },
-  { name: 'BAR STOOLS AND COCKTAIL TABLES', image: '/images/stock/category-bar-cocktail.png', link: '/shop?category=bar-cocktail' },
-  { name: 'SHELVES & BARS', image: '/images/stock/category-shelves-bars.png', link: '/shop?category=shelves-bars' },
-  { name: 'ACCENT CHAIRS', image: '/images/stock/category-accent-chairs.png', link: '/shop?category=accent-chairs' },
-  { name: 'SOFAS', image: '/images/stock/category-sofas.png', link: '/shop?category=sofas' },
-  { name: 'BANQUET SOFAS', image: '/images/stock/category-banquet-sofas.png', link: '/shop?category=banquet-sofas' },
-  { name: 'COFFEE AND SIDE TABLES', image: '/images/stock/category-coffee-side.png', link: '/shop?category=coffee-side' },
-  { name: 'BACKDROPS', image: '/images/stock/category-backdrops.png', link: '/shop?category=backdrops' },
-  { name: 'PROPS', image: '/images/stock/category-props.png', link: '/shop?category=props' },
+  { name: 'TABLETOP', image: '/images/stock/category-tabletop.png', link: '/shop/category/tabletop' },
+  { name: 'LINEN', image: '/images/stock/category-linen.png', link: '/shop/category/linen' },
+  { name: 'DRAPING', image: '/images/stock/category-draping.png', link: '/shop/category/draping' },
+  { name: 'CANDELABRAS AND CANDLE HOLDERS', image: '/images/stock/category-candle.png', link: '/shop/category/candles' },
+  { name: 'PEDESTALS', image: '/images/stock/category-pedestals.png', link: '/shop/category/pedestals' },
+  { name: 'TABLES', image: '/images/stock/category-tables.png', link: '/shop/category/tables' },
+  { name: 'DINING CHAIRS', image: '/images/stock/category-dining-chairs.png', link: '/shop/category/dining-chairs' },
+  { name: 'BAR STOOLS AND COCKTAIL TABLES', image: '/images/stock/category-bar-cocktail.png', link: '/shop/category/bar-cocktail' },
+  { name: 'SHELVES & BARS', image: '/images/stock/category-shelves-bars.png', link: '/shop/category/shelves-bars' },
+  { name: 'ACCENT CHAIRS', image: '/images/stock/category-accent-chairs.png', link: '/shop/category/accent-chairs' },
+  { name: 'SOFAS', image: '/images/stock/category-sofas.png', link: '/shop/category/sofas' },
+  { name: 'BANQUET SOFAS', image: '/images/stock/category-banquet-sofas.png', link: '/shop/category/banquet-sofas' },
+  { name: 'COFFEE AND SIDE TABLES', image: '/images/stock/category-coffee-side.png', link: '/shop/category/coffee-side' },
+  { name: 'BACKDROPS', image: '/images/stock/category-backdrops.png', link: '/shop/category/backdrops' },
+  { name: 'PROPS', image: '/images/stock/category-props.png', link: '/shop/category/props' },
 ];
 
 export default function ProductCategoriesSection() {

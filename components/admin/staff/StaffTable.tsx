@@ -84,7 +84,7 @@ export default function StaffTable() {
       {error && <div className="text-red-600 mb-2">{error}</div>}
       <div className="mb-3 flex gap-2 items-center">
         <button
-          className="text-white bg-red-600 hover:bg-red-700 text-sm rounded-md px-3 py-1.5"
+          className="text-white bg-[#D4AF36] hover:bg-[#C19A2B] text-sm rounded-md px-3 py-1.5"
           onClick={handleBatchDelete}
           disabled={!selected.length || batchLoading}
         >
@@ -143,7 +143,7 @@ export default function StaffTable() {
               <td className="p-3">{user.created_at ? new Date(user.created_at).toLocaleDateString() : "-"}</td>
               <td className="p-3">
                 <button
-                  className="text-white bg-red-600 hover:bg-red-700 text-xs rounded-md px-2.5 py-1"
+                  className="text-white bg-[#D4AF36] hover:bg-[#C19A2B] text-xs rounded-md px-2.5 py-1"
                   onClick={() => handleDelete(user.id)}
                 >
                   Delete

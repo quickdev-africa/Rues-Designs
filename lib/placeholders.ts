@@ -8,25 +8,40 @@ export const PLACEHOLDER_TESTIMONIAL = '/assets/placeholders/testimonial-placeho
  * This is useful for development when actual images aren't available
  */
 export function placeholderImage(path: string): string {
-  // For production, we'd just return the path
+  // Always show real category images for these specific category files
+  const allowedCategoryImages = [
+    'category-tabletop.jpg',
+    'category-linen.jpg',
+    'category-draping.jpg',
+    'category-candles.jpg',
+    'category-pedestals.jpg',
+    'category-tables.jpg',
+    'category-dining-chairs.jpg',
+    'category-bar-cocktail.jpg',
+    'category-shelves-bars.jpg',
+    'category-accent-chairs.jpg',
+    'category-sofas.jpg',
+    'category-banquet-sofas.jpg',
+    'category-coffee-side.jpg',
+    'category-backdrops.jpg',
+    'category-props.jpg',
+  ];
+  for (const file of allowedCategoryImages) {
+    if (path.endsWith(file)) {
+      return path;
+    }
+  }
+  // For production, return the path
   if (process.env.NODE_ENV === 'production') {
     return path;
   }
-  
-  // For development, use static placeholder images instead of trying to append .html
-  // This is a simplified approach until real images are available
-  if (path.includes('/category-')) {
-    return '/assets/placeholders/product-placeholder.svg';
-  }
-  
+  // For other cases, use placeholders
   if (path.includes('/banner-') || path.includes('-hero')) {
     return '/assets/placeholders/banner-placeholder.svg';
   }
-  
   if (path.includes('/products/')) {
     return '/assets/placeholders/product-placeholder.svg';
   }
-  
   // Default fallback
   return '/assets/placeholders/product-placeholder.svg';
 }

@@ -99,10 +99,10 @@ export default function HeroSection() {
               
               <div className="flex flex-wrap gap-4 mb-8">
                 <motion.a 
-                  href="/products" 
+                  href="/shop/categories" 
                   className="px-6 py-3 text-white font-semibold rounded-md shadow-md transition-all relative overflow-hidden group"
                   style={{ 
-                    background: "linear-gradient(to right, #31473A, #3c5848)",
+                    background: "#D4AF37",
                     border: "1px solid #D4AF37"
                   }}
                   initial={{ opacity: 0, y: 20 }}
@@ -114,22 +114,11 @@ export default function HeroSection() {
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="relative z-10">Browse Catalog</span>
-                  <motion.span 
-                    className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#b7953a] opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-                    initial={{ y: "100%" }}
-                    whileHover={{ y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <span className="relative z-10">Browse Collection</span>
                 </motion.a>
-                
                 <motion.a 
                   href="/contact" 
-                  className="px-6 py-3 text-white font-semibold rounded-md shadow-md transition-all relative overflow-hidden group"
-                  style={{ 
-                    background: "linear-gradient(to right, #31473A, #3c5848)",
-                    border: "1px solid #D4AF37"
-                  }}
+                  className="px-6 py-3 text-[#D4AF37] font-semibold rounded-md shadow-md transition-all relative overflow-hidden group border border-[#D4AF37] bg-white"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7, duration: 0.5 }}
@@ -139,13 +128,7 @@ export default function HeroSection() {
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="relative z-10">Get Quote</span>
-                  <motion.span 
-                    className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#b7953a] opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-                    initial={{ y: "100%" }}
-                    whileHover={{ y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <span className="relative z-10">Contact Us</span>
                 </motion.a>
               </div>
               
@@ -218,7 +201,7 @@ export default function HeroSection() {
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="relative z-10 text-lg">Get Your Custom Quote Today</span>
+                  <span className="relative z-10 text-lg">Get Your Custom Quote</span>
                   <motion.span 
                     className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#b7953a] opacity-0 group-hover:opacity-20 transition-opacity duration-300"
                     initial={{ y: "100%" }}

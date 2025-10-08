@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useCart } from '../ui/CartContext';
+import { useWishlist } from '../ui/WishlistContext';
 import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { OptimizedImage } from '../OptimizedImage';
@@ -24,14 +26,37 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  
+  const { items: wishlistItems, addItem: addWishlist, removeItem: removeWishlist } = useWishlist();
+  const { addItem: addCart } = useCart();
+  const isWishlisted = wishlistItems.some(i => i.id === product.id);
+
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
+    if (isWishlisted) {
+      removeWishlist(product.id);
+    } else {
+      addWishlist({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      });
+    }
   };
-  
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      quantity: 1,
+    });
+  };
+
   return (
     <div 
       className="group relative rounded-lg border border-gray-200 overflow-hidden flex flex-col"
@@ -90,6 +115,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="bg-white p-2 rounded-full shadow-md hover:bg-[#D4AF37] hover:text-white transition-colors duration-200"
             disabled={!product.inStock}
             aria-label="Add to cart"
+            onClick={handleAddToCart}
           >
             <ShoppingCart size={18} />
             <span className="sr-only">Add to cart</span>
@@ -129,14 +155,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             ${product.price.toFixed(2)}<span className="text-xs font-normal text-gray-600"> /day</span>
           </div>
           
-          {/* Stock status */}
-          <div className="text-xs mt-1">
-            {product.inStock ? (
-              <span className="text-green-600">Available for rent</span>
-            ) : (
-              <span className="text-red-600">Currently unavailable</span>
-            )}
-          </div>
+          {/* Stock status removed as requested */}
         </div>
       </div>
     </div>

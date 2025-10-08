@@ -5,45 +5,6 @@ import { Search, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Sample search results for the autocomplete demo
-// In production, this would come from your API
-const sampleProducts = [
-  {
-    id: 'product-1',
-    name: 'Gold Rimmed Charger Plate',
-    category: 'Tableware',
-    price: 8.99,
-    imageUrl: '/images/stock/category-linen.png'
-  },
-  {
-    id: 'product-2',
-    name: 'Velvet Lounge Chair',
-    category: 'Furniture',
-    price: 45.99,
-    imageUrl: '/images/stock/category-accent-chairs.png'
-  },
-  {
-    id: 'product-3',
-    name: 'Crystal Champagne Flute',
-    category: 'Tableware',
-    price: 6.50,
-    imageUrl: '/images/stock/category-tabletop.png'
-  },
-  {
-    id: 'product-4',
-    name: 'Floral Backdrop',
-    category: 'Backdrops',
-    price: 150.00,
-    imageUrl: '/images/stock/category-backdrops.png'
-  },
-  {
-    id: 'product-5',
-    name: 'Taper Candle Holder Set',
-    category: 'Decor',
-    price: 12.99,
-    imageUrl: '/images/stock/category-candle.png'
-  }
-];
 
 interface ProductSearchProps {
   onSearch: (searchTerm: string) => void;
@@ -61,19 +22,8 @@ export default function ProductSearch({ onSearch, className = '' }: ProductSearc
     const value = e.target.value;
     setSearchTerm(value);
     
-    // Filter sample products based on search term
-    // In production, this would be an API call
-    if (value.length > 1) {
-      const filtered = sampleProducts.filter(product => 
-        product.name.toLowerCase().includes(value.toLowerCase()) ||
-        product.category.toLowerCase().includes(value.toLowerCase())
-      );
-      setResults(filtered);
-      setIsActive(true);
-    } else {
-      setResults([]);
-      setIsActive(false);
-    }
+    // TODO: Replace with real product search from Supabase
+    setResults([]);
   };
   
   // Handle search submission

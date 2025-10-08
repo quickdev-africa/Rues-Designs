@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Us' },
-  { href: '/shop', label: 'Shop' },
-  { href: '/collections', label: 'Collections' },
+  { href: '/shop/categories', label: 'Collection' },
+  { href: '/features', label: 'Features' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -32,11 +32,12 @@ export default function NavbarMenu() {
           <Link 
             key={link.href} 
             href={link.href} 
-            className={`font-medium transition-colors py-2 relative group ${
+            className={`font-normal text-[16px] transition-colors py-2 relative group font-sfpro ${
               isActive(link.href) 
                 ? 'text-[#D4AF37]' 
                 : 'text-gray-700 hover:text-[#D4AF37]'
             }`}
+            style={{ fontFamily: 'SF Pro Text, system-ui, sans-serif', fontWeight: 400 }}
           >
             {link.label}
             <span className={`absolute bottom-0 left-0 h-0.5 bg-[#D4AF37] transition-all duration-300 ${
@@ -77,11 +78,12 @@ export default function NavbarMenu() {
                 <Link 
                   key={link.href} 
                   href={link.href} 
-                  className={`block px-6 py-3 border-b border-gray-100 last:border-b-0 ${
+                  className={`block px-6 py-3 border-b border-gray-100 last:border-b-0 font-normal text-[17px] font-sfpro ${
                     isActive(link.href)
                       ? 'text-[#D4AF37] bg-gray-50'
                       : 'text-gray-900 hover:bg-gray-50'
                   }`}
+                  style={{ fontFamily: 'SF Pro Text, system-ui, sans-serif', fontWeight: 400 }}
                   onClick={() => setOpen(false)}
                 >
                   {link.label}

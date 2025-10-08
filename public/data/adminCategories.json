@@ -1,0 +1,17 @@
+[
+  { "id": "tabletop", "name": "Tabletop", "imageUrl": "/images/stock/category-tabletop.jpg" },
+  { "id": "linen", "name": "Linen", "imageUrl": "/images/stock/category-linen.jpg" },
+  { "id": "draping", "name": "Draping", "imageUrl": "/images/stock/category-draping.jpg" },
+  { "id": "candles", "name": "Candelabras & Candle Holders", "imageUrl": "/images/stock/category-candles.jpg" },
+  { "id": "pedestals", "name": "Pedestals", "imageUrl": "/images/stock/category-pedestals.jpg" },
+  { "id": "tables", "name": "Tables", "imageUrl": "/images/stock/category-tables.jpg" },
+  { "id": "dining-chairs", "name": "Dining Chairs", "imageUrl": "/images/stock/category-dining-chairs.jpg" },
+  { "id": "bar-cocktail", "name": "Bar Stools & Cocktail Tables", "imageUrl": "/images/stock/category-bar-cocktail.jpg" },
+  { "id": "shelves-bars", "name": "Shelves & Bars", "imageUrl": "/images/stock/category-shelves-bars.jpg" },
+  { "id": "accent-chairs", "name": "Accent Chairs", "imageUrl": "/images/stock/category-accent-chairs.jpg" },
+  { "id": "sofas", "name": "Sofas", "imageUrl": "/images/stock/category-sofas.jpg" },
+  { "id": "banquet-sofas", "name": "Banquet Sofas", "imageUrl": "/images/stock/category-banquet-sofas.jpg" },
+  { "id": "coffee-side", "name": "Coffee & Side Tables", "imageUrl": "/images/stock/category-coffee-side.jpg" },
+  { "id": "backdrops", "name": "Backdrops", "imageUrl": "/images/stock/category-backdrops.jpg" },
+  { "id": "props", "name": "Props", "imageUrl": "/images/stock/category-props.jpg" }
+]

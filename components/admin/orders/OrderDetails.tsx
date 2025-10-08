@@ -103,11 +103,11 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
       <div className="mt-6 flex gap-4">
         {edit ? (
           <>
-            <button className="btn btn-primary" onClick={handleUpdate}>Save</button>
-            <button className="btn btn-ghost" onClick={() => setEdit(false)}>Cancel</button>
+            <button className="btn bg-[#D4AF36] text-white" onClick={handleUpdate}>Save</button>
+            <button className="btn bg-transparent text-[#D4AF36] border border-[#D4AF36]" onClick={() => setEdit(false)}>Cancel</button>
           </>
         ) : (
-          <button className="btn btn-outline" onClick={() => setEdit(true)}>Edit</button>
+          <button className="btn border border-[#D4AF36] text-[#D4AF36] bg-white hover:bg-[#D4AF36]/10" onClick={() => setEdit(true)}>Edit</button>
         )}
       </div>
     </div>

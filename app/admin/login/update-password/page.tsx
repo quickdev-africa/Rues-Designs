@@ -80,7 +80,7 @@ export default function UpdatePasswordPage() {
           placeholder="••••••••"
           required
         />
-        <button type="submit" className="mt-2 bg-gray-900 text-white py-2 rounded-md hover:bg-black transition-colors">Update password</button>
+  <button type="submit" className="mt-2 bg-[#D4AF36] text-white py-2 rounded-md hover:bg-[#C19A2B] transition-colors">Update password</button>
         {error && <div className="text-red-600 text-sm" role="alert">{error}</div>}
         {message && <div className="text-green-700 text-sm">{message}</div>}
       </form>

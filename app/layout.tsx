@@ -1,6 +1,8 @@
 
 import '../styles/globals.css';
 import Layout from '../components/layout/Layout';
+import { CartProvider } from '../components/ui/CartContext';
+import { WishlistProvider } from '../components/ui/WishlistContext';
 import { Metadata, Viewport } from 'next';
 
 export const viewport: Viewport = {
@@ -31,7 +33,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Layout>{children}</Layout>
+        <CartProvider>
+          <WishlistProvider>
+            <Layout>{children}</Layout>
+          </WishlistProvider>
+        </CartProvider>
       </body>
     </html>
   );

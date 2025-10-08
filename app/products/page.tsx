@@ -30,32 +30,34 @@ function ProductsPageContent() {
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
-      
-      // In a real implementation, you would fetch from your API
-      // This is a simulated fetch with a timeout
-      setTimeout(() => {
-        // Sample product data - replace with actual fetch from API
-        const mockProducts = Array(24).fill(null).map((_, index) => ({
-          id: `prod-${index}`,
-          name: `${['Elegant', 'Modern', 'Classic', 'Luxury'][index % 4]} ${['Chair', 'Table', 'Sofa', 'Backdrop', 'Linen', 'Candle', 'Centerpiece'][index % 7]}`,
-          description: 'Perfect for weddings, parties, and special events.',
-          price: 25 + (index % 10) * 12,
-          category: ['furniture', 'decor', 'tableware', 'backdrops'][index % 4],
-          subCategory: ['chairs', 'tables', 'linens', 'candles'][index % 4],
-          rating: 3 + (index % 3),
-          reviewCount: 5 + index,
-          inStock: index % 7 !== 0,
-          imageUrl: `/images/stock/category-${['accent-chairs', 'tables', 'linen', 'candle', 'backdrops', 'props'][index % 6]}.png`,
-          isNew: index % 8 === 0,
-          isPopular: index % 5 === 0,
-        }));
-        
-        setProducts(mockProducts);
-        setTotalProducts(156); // Total count for pagination
-        setIsLoading(false);
-      }, 800); // Simulate loading delay
+      try {
+        const { supabase } = await import('@/lib/supabase');
+        const { data, error } = await supabase
+          .from('products')
+          .select('id, name, description, daily_rate, category, images')
+          .order('popularity_score', { ascending: false });
+        if (error) {
+          setProducts([]);
+          setTotalProducts(0);
+        } else {
+          // Map images to imageUrl for ProductCatalog
+          const mapped = (data || []).map(p => ({
+            id: p.id,
+            name: p.name,
+            description: p.description,
+            price: p.daily_rate,
+            category: p.category,
+            imageUrl: Array.isArray(p.images) ? p.images[0] : '',
+          }));
+          setProducts(mapped);
+          setTotalProducts(mapped.length);
+        }
+      } catch (err) {
+        setProducts([]);
+        setTotalProducts(0);
+      }
+      setIsLoading(false);
     };
-
     fetchProducts();
   }, [searchParams, sortOption, currentPage, itemsPerPage, activeFilters]);
 

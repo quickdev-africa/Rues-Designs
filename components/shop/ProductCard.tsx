@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useCart } from '../ui/CartContext';
 import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -25,13 +26,28 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  
+  const { addItem } = useCart();
+
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsWishlisted(!isWishlisted);
   };
-  
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (product.inStock) {
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        quantity: 1,
+      });
+    }
+  };
+
   return (
     <div 
       className="group relative rounded-lg border border-gray-200 overflow-hidden flex flex-col"
@@ -90,6 +106,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="bg-white p-2 rounded-full shadow-md hover:bg-[#D4AF37] hover:text-white transition-colors duration-200"
             disabled={!product.inStock}
             aria-label="Add to cart"
+            onClick={handleAddToCart}
           >
             <ShoppingCart size={18} />
             <span className="sr-only">Add to cart</span>
